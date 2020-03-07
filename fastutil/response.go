@@ -1,4 +1,4 @@
-package httputil
+package fastutil
 
 import (
 	"encoding/json"
