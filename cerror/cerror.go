@@ -12,14 +12,13 @@ const (
 	CodeNotFoundErr     = 40400
 	CodeUnauthorizedErr = 40100
 	CodeForbiddenErr    = 40300
-
-	codeErrDelta = 1
 )
 
 var (
 	ErrNotFound     = NewStatusCodeError(http.StatusNotFound, CodeNotFoundErr, "not found")
-	ErrArgRequired  = NewStatusCodeError(http.StatusBadRequest, CodeBadErr, "arg required")
-	ErrValueInvalid = NewStatusCodeError(http.StatusBadRequest, CodeBadErr+codeErrDelta, "value invalid")
+	ErrBadRequest   = NewStatusCodeError(http.StatusBadRequest, CodeBadErr, "forbidden")
+	ErrArgRequired  = NewStatusCodeError(http.StatusBadRequest, CodeBadErr+1, "arg required")
+	ErrValueInvalid = NewStatusCodeError(http.StatusBadRequest, CodeBadErr+2, "value invalid")
 	ErrUnauthorized = NewStatusCodeError(http.StatusUnauthorized, CodeUnauthorizedErr, "unauthorized")
 	ErrForbidden    = NewStatusCodeError(http.StatusForbidden, CodeForbiddenErr, "forbidden")
 )
