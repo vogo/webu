@@ -3,6 +3,7 @@
 package snowflake
 
 import (
+	"encoding/base64"
 	"encoding/binary"
 	"net"
 	"time"
@@ -70,6 +71,7 @@ func newSnowflake() *sonyflake.Sonyflake {
 // Snowflake snow flake id interface
 type Snowflake interface {
 	NextID() uint64
+	NextSID() string
 }
 
 type sonySnowflake struct {
@@ -85,6 +87,18 @@ func (s *sonySnowflake) NextID() uint64 {
 	}
 
 	return id
+}
+
+// NextSID generate string format id
+func (s *sonySnowflake) NextSID() string {
+	id, err := s.flake.NextID()
+	if err != nil {
+		panic(err)
+	}
+
+	b := make([]byte, 8)
+	binary.BigEndian.PutUint64(b, id)
+	return base64.RawURLEncoding.EncodeToString(b)
 }
 
 // New Snowflake

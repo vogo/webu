@@ -12,4 +12,8 @@ func TestSonySnowflake_NextID(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		t.Log(snowflake.NextID())
 	}
+
+	for i := 0; i < 10; i++ {
+		t.Log(snowflake.NextSID())
+	}
 }
