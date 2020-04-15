@@ -37,7 +37,7 @@ func ErrorResponse(ctx *fasthttp.RequestCtx, err error) {
 		ctx.SetStatusCode(c.Status())
 	}
 
-	code := cerror.CodeServerErr
+	code := cerror.CodeUnknownErr
 
 	if c, ok := err.(cerror.Coder); ok {
 		code = c.Code()
@@ -47,7 +47,7 @@ func ErrorResponse(ctx *fasthttp.RequestCtx, err error) {
 }
 
 func ResponseBadMsg(ctx *fasthttp.RequestCtx, msg string) {
-	ResponseCodeMsg(ctx, cerror.CodeBadErr, msg)
+	ResponseCodeMsg(ctx, cerror.CodeRequestErr, msg)
 }
 
 func ResponseBadError(ctx *fasthttp.RequestCtx, err error) {

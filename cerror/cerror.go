@@ -6,21 +6,19 @@ package cerror
 import "net/http"
 
 const (
-	CodeOK              = 20000
-	CodeServerErr       = 50000
-	CodeBadErr          = 40000
-	CodeNotFoundErr     = 40400
-	CodeUnauthorizedErr = 40100
-	CodeForbiddenErr    = 40300
+	CodeOK         = 0
+	CodeUnknownErr = 10
+	CodeAuthErr    = 20
+	CodeRequestErr = 100
 )
 
 var (
-	ErrNotFound     = NewStatusCodeError(http.StatusNotFound, CodeNotFoundErr, "not found")
-	ErrBadRequest   = NewStatusCodeError(http.StatusBadRequest, CodeBadErr, "forbidden")
-	ErrArgRequired  = NewStatusCodeError(http.StatusBadRequest, CodeBadErr+1, "arg required")
-	ErrValueInvalid = NewStatusCodeError(http.StatusBadRequest, CodeBadErr+2, "value invalid")
-	ErrUnauthorized = NewStatusCodeError(http.StatusUnauthorized, CodeUnauthorizedErr, "unauthorized")
-	ErrForbidden    = NewStatusCodeError(http.StatusForbidden, CodeForbiddenErr, "forbidden")
+	ErrBadRequest   = NewStatusCodeError(http.StatusBadRequest, CodeRequestErr, "forbidden")
+	ErrNotFound     = NewStatusCodeError(http.StatusNotFound, CodeRequestErr+1, "not found")
+	ErrArgRequired  = NewStatusCodeError(http.StatusBadRequest, CodeRequestErr+2, "arg required")
+	ErrValueInvalid = NewStatusCodeError(http.StatusBadRequest, CodeRequestErr+3, "value invalid")
+	ErrUnauthorized = NewStatusCodeError(http.StatusUnauthorized, CodeAuthErr, "unauthorized")
+	ErrForbidden    = NewStatusCodeError(http.StatusForbidden, CodeAuthErr+1, "forbidden")
 )
 
 type Coder interface {
