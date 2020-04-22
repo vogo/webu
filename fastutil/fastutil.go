@@ -1,3 +1,5 @@
+//author: wongoo
+
 package fastutil
 
 import (
