@@ -1,5 +1,3 @@
-// +build ignore
-
 // Command makeStatic reads a set of files and writes a Go source file to "static.go"
 // that declares a map of string constants containing contents of the input files.
 package main
@@ -12,8 +10,6 @@ import (
 	"os"
 	"path/filepath"
 	"unicode/utf8"
-
-	"github.com/vogo/vogo/vio/vioutil"
 )
 
 func main() {
@@ -38,30 +34,76 @@ func makeStatic(pk, srcDir, targetDir string) error {
 	fmt.Fprintf(buf, "%v\n\n%v\n\npackage %s\n\n", license, warning, pk)
 	fmt.Fprintf(buf, "var StaticFiles = map[string]string{\n")
 
-	files, err := vioutil.ListFileNames(srcDir, "", ".html")
-	if err != nil {
+	srcDir = filepath.Clean(srcDir)
+	if err := loopAddFiles(buf, srcDir, srcDir); err != nil {
 		return err
 	}
 
-	for _, file := range files {
-		b, err := ioutil.ReadFile(filepath.Join(srcDir, file))
-		if err != nil {
-			return err
-		}
-		fmt.Fprintf(buf, "\t%q: ", file)
-		if utf8.Valid(b) {
-			fmt.Fprintf(buf, "`%s`", sanitize(b))
-		} else {
-			fmt.Fprintf(buf, "%q", b)
-		}
-		fmt.Fprintln(buf, ",\n")
-	}
 	fmt.Fprintln(buf, "}")
 	fmtBuf, err := format.Source(buf.Bytes())
 	if err != nil {
 		return err
 	}
 	return ioutil.WriteFile(staticFile, fmtBuf, 0666)
+}
+
+// readDirNames reads the directory named by dirname and returns
+// a sorted list of directory entries.
+func readDirNames(dirname string) ([]string, error) {
+	f, err := os.Open(dirname)
+	if err != nil {
+		return nil, err
+	}
+	names, err := f.Readdirnames(-1)
+	f.Close()
+	if err != nil {
+		return nil, err
+	}
+	return names, nil
+}
+
+func loopAddFiles(buf *bytes.Buffer, rootDir string, readDir string) error {
+	prefix := ""
+	if len(readDir) > len(rootDir) {
+		prefix = readDir[len(rootDir)+1:] + "/"
+	}
+
+	dirs, err := readDirNames(readDir)
+	if err != nil {
+		return err
+	}
+
+	for _, dir := range dirs {
+		path := filepath.Join(readDir, dir)
+		info, err := os.Lstat(path)
+		if err != nil {
+			return err
+		}
+
+		if info.IsDir() {
+			if err := loopAddFiles(buf, rootDir, path); err != nil {
+				return err
+			}
+
+			continue
+		}
+
+		fmt.Printf("add file %s\n", path)
+
+		b, err := ioutil.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		fmt.Fprintf(buf, "\n\t%q: ", prefix+info.Name())
+		if utf8.Valid(b) {
+			fmt.Fprintf(buf, "`%s`", sanitize(b))
+		} else {
+			fmt.Fprintf(buf, "%q", b)
+		}
+
+		fmt.Fprintln(buf, ",")
+	}
+	return nil
 }
 
 // sanitize prepares a valid UTF-8 string as a raw string constant.
