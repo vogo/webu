@@ -33,10 +33,10 @@ func RequireQueryArg(ctx *fasthttp.RequestCtx, arg string) ([]byte, error) {
 	return val, nil
 }
 
-func RequireQueryString(ctx *fasthttp.RequestCtx, arg string) (int, error) {
+func RequireQueryString(ctx *fasthttp.RequestCtx, arg string) (string, error) {
 	val := ctx.QueryArgs().Peek(arg)
 	if len(val) == 0 {
-		return nil, cerror.ErrArgRequired
+		return "", cerror.ErrArgRequired
 	}
 
 	return string(val), nil
