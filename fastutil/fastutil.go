@@ -21,7 +21,7 @@ import (
 	"strconv"
 
 	"github.com/valyala/fasthttp"
-	"github.com/wongoo/webu/cerror"
+	"github.com/vogo/webu/cerror"
 )
 
 func RequireQueryArg(ctx *fasthttp.RequestCtx, arg string) ([]byte, error) {
