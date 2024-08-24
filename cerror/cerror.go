@@ -20,20 +20,25 @@ package cerror
 import "net/http"
 
 const (
-	CodeOK         = 0
-	CodeUnknownErr = 10
-	CodeAuthErr    = 20
-	CodeRequestErr = 100
+	CodeOK                 = 0
+	CodeUnknownErr         = 10
+	CodeUnauthenticatedErr = 20
+	CodeUnauthorizedErr    = 21
+	CodeForbiddenErr       = 22
+	CodeBadRequestErr      = 100
+	CodeNotFoundErr        = 101
+	CodeArgRequiredErr     = 102
+	CodeValueInvalidErr    = 103
 )
 
 var (
-	ErrBadRequest      = NewStatusCodeError(http.StatusBadRequest, 100, "forbidden")
-	ErrNotFound        = NewStatusCodeError(http.StatusNotFound, 101, "not found")
-	ErrArgRequired     = NewStatusCodeError(http.StatusBadRequest, 102, "arg required")
-	ErrValueInvalid    = NewStatusCodeError(http.StatusBadRequest, 103, "value invalid")
-	ErrUnauthenticated = NewStatusCodeError(http.StatusUnauthorized, 20, "unauthenticated")
-	ErrUnauthorized    = NewStatusCodeError(http.StatusUnauthorized, 21, "unauthorized")
-	ErrForbidden       = NewStatusCodeError(http.StatusForbidden, 22, "forbidden")
+	ErrBadRequest      = NewStatusCodeError(http.StatusBadRequest, CodeBadRequestErr, "forbidden")
+	ErrNotFound        = NewStatusCodeError(http.StatusNotFound, CodeNotFoundErr, "not found")
+	ErrArgRequired     = NewStatusCodeError(http.StatusBadRequest, CodeArgRequiredErr, "arg required")
+	ErrValueInvalid    = NewStatusCodeError(http.StatusBadRequest, CodeValueInvalidErr, "value invalid")
+	ErrUnauthenticated = NewStatusCodeError(http.StatusUnauthorized, CodeUnauthenticatedErr, "unauthenticated")
+	ErrUnauthorized    = NewStatusCodeError(http.StatusUnauthorized, CodeUnauthorizedErr, "unauthorized")
+	ErrForbidden       = NewStatusCodeError(http.StatusForbidden, CodeForbiddenErr, "forbidden")
 )
 
 type Coder interface {
