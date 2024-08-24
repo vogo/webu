@@ -27,12 +27,13 @@ const (
 )
 
 var (
-	ErrBadRequest   = NewStatusCodeError(http.StatusBadRequest, 100, "forbidden")
-	ErrNotFound     = NewStatusCodeError(http.StatusNotFound, 101, "not found")
-	ErrArgRequired  = NewStatusCodeError(http.StatusBadRequest, 102, "arg required")
-	ErrValueInvalid = NewStatusCodeError(http.StatusBadRequest, 103, "value invalid")
-	ErrUnauthorized = NewStatusCodeError(http.StatusUnauthorized, 20, "unauthorized")
-	ErrForbidden    = NewStatusCodeError(http.StatusForbidden, 21, "forbidden")
+	ErrBadRequest      = NewStatusCodeError(http.StatusBadRequest, 100, "forbidden")
+	ErrNotFound        = NewStatusCodeError(http.StatusNotFound, 101, "not found")
+	ErrArgRequired     = NewStatusCodeError(http.StatusBadRequest, 102, "arg required")
+	ErrValueInvalid    = NewStatusCodeError(http.StatusBadRequest, 103, "value invalid")
+	ErrUnauthenticated = NewStatusCodeError(http.StatusUnauthorized, 20, "unauthenticated")
+	ErrUnauthorized    = NewStatusCodeError(http.StatusUnauthorized, 21, "unauthorized")
+	ErrForbidden       = NewStatusCodeError(http.StatusForbidden, 22, "forbidden")
 )
 
 type Coder interface {

@@ -37,6 +37,10 @@ func ResponseData(ctx *fasthttp.RequestCtx, code int, data interface{}) {
 	printResp(ctx, code, "", data)
 }
 
+func ResponseCodeData(ctx *fasthttp.RequestCtx, code int, msg string, data interface{}) {
+	printResp(ctx, code, msg, data)
+}
+
 func ResponseOK(ctx *fasthttp.RequestCtx) {
 	printResp(ctx, cerror.CodeOK, "", "ok")
 }
