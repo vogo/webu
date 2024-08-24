@@ -68,7 +68,7 @@ func ErrorResponse(ctx *fasthttp.RequestCtx, err error) {
 }
 
 func ResponseBadMsg(ctx *fasthttp.RequestCtx, msg string) {
-	ResponseCodeMsg(ctx, cerror.CodeRequestErr, msg)
+	ResponseCodeMsg(ctx, cerror.CodeBadRequestErr, msg)
 }
 
 func ResponseBadError(ctx *fasthttp.RequestCtx, err error) {
