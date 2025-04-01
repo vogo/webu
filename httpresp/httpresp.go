@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package httputil
+package httpresp
 
 import (
 	"encoding/json"

@@ -19,7 +19,7 @@ package fastutil
 
 import (
 	"encoding/json"
-	"github.com/vogo/webu/httputil"
+	"github.com/vogo/webu/httpresp"
 	"html/template"
 
 	"github.com/vogo/logger"
@@ -76,7 +76,7 @@ func ResponseCodeMsg(ctx *fasthttp.RequestCtx, code int, msg string) {
 }
 
 func WriteResp(ctx *fasthttp.RequestCtx, code int, msg string, data interface{}) {
-	resp := httputil.ResponseBody{
+	resp := httpresp.ResponseBody{
 		Code: code,
 		Msg:  msg,
 		Data: data,
