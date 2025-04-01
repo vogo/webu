@@ -19,6 +19,7 @@ package fastutil
 
 import (
 	"encoding/json"
+	"github.com/vogo/webu/httputil"
 	"html/template"
 
 	"github.com/vogo/logger"
@@ -27,26 +28,20 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
-type response struct {
-	Code int         `json:"code"`
-	Msg  string      `json:"msg,omitempty"`
-	Data interface{} `json:"data,omitempty"`
-}
-
 func ResponseData(ctx *fasthttp.RequestCtx, code int, data interface{}) {
-	printResp(ctx, code, "", data)
+	WriteResp(ctx, code, "", data)
 }
 
 func ResponseCodeData(ctx *fasthttp.RequestCtx, code int, msg string, data interface{}) {
-	printResp(ctx, code, msg, data)
+	WriteResp(ctx, code, msg, data)
 }
 
 func ResponseOK(ctx *fasthttp.RequestCtx) {
-	printResp(ctx, cerror.CodeOK, "", "ok")
+	WriteResp(ctx, cerror.CodeOK, "", "ok")
 }
 
 func ResponseSuccess(ctx *fasthttp.RequestCtx, data interface{}) {
-	printResp(ctx, cerror.CodeOK, "", data)
+	WriteResp(ctx, cerror.CodeOK, "", data)
 }
 
 func ResponseCodeError(ctx *fasthttp.RequestCtx, code int, err error) {
@@ -77,11 +72,11 @@ func ResponseBadError(ctx *fasthttp.RequestCtx, err error) {
 }
 
 func ResponseCodeMsg(ctx *fasthttp.RequestCtx, code int, msg string) {
-	printResp(ctx, code, msg, nil)
+	WriteResp(ctx, code, msg, nil)
 }
 
-func printResp(ctx *fasthttp.RequestCtx, code int, msg string, data interface{}) {
-	resp := response{
+func WriteResp(ctx *fasthttp.RequestCtx, code int, msg string, data interface{}) {
+	resp := httputil.ResponseBody{
 		Code: code,
 		Msg:  msg,
 		Data: data,
